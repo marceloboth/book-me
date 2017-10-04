@@ -1,0 +1,35 @@
+<form {{action (route-action "registerUser" user) on="submit"}}>
+  <div class="form-group">
+    <label for="signup-email">Email address</label>
+    {{input
+      data-test-signup-email-field
+      id="sigunp-email"
+      value=(mut user.email)
+      class="form-control"
+    }}
+  </div>
+  
+  <div class="form-group">
+    <label for="signup-password">Password</label>
+    {{input
+      data-test-signup-password-field
+      id="signup-password"
+      value=(mut user.password)
+      class="form-control"
+      type="password"
+    }}
+  </div>
+  
+  <div class="form-group">
+    <label for="signup-password">Password Confirmation</label>
+    {{input
+      data-test-signup-password-confirmation-field
+      id="signup-passwordConfirmation"
+      value=(mut user.passwordConfirmation)
+      class="form-control"
+      type="password"
+    }}
+  </div>
+  
+  <button type="submit" class="btn btn-primary" data-test-signup-submit-btn>Submit</button>
+</form> 

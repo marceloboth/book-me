@@ -1,0 +1,32 @@
+import { test } from 'qunit';
+import moduleForAcceptance from 'book-me/tests/helpers/module-for-acceptance';
+import testSelector from 'ember-test-selectors';
+
+moduleForAcceptance('Acceptance | sign in sign up');
+
+test('user can successfully sign up', function(assert) {
+  assert.expect(1);
+
+  server.post('/users', function(schema) {
+    const attributes = this.normalizedRequestAttrs();
+    const expectedAttributes = {
+      email: 'example@email.com',
+      password: 'password123',
+      passwordConfirmation: 'password123',
+    };
+
+    assert.deepEqual(attributes, expectedAttributes, "attributes don't match the expected ones");
+
+    return schema.users.create(attributes);
+  });
+
+  click(testSelector('signup-link'));
+
+  andThen(() => {
+    fillIn(testSelector('signup-email-field'), 'example@email.com');
+    fillIn(testSelector('signup-password-field'), 'password123');
+    fillIn(testSelector('signup-password-confirmation-field'), 'password123');
+
+    click(testSelector('signup-submit-btn'));
+  });
+});

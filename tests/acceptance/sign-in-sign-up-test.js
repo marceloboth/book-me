@@ -20,6 +20,8 @@ test('user can successfully sign up', function(assert) {
     return schema.users.create(attributes);
   });
 
+  visit("/");
+
   click(testSelector('signup-link'));
 
   andThen(() => {
@@ -28,5 +30,28 @@ test('user can successfully sign up', function(assert) {
     fillIn(testSelector('signup-password-confirmation-field'), 'password123');
 
     click(testSelector('signup-submit-btn'));
+  });
+
+  test('user cannot signup if there is an error', function (assert) {
+    assert.expect(1);
+
+    server.post('/users', () => {
+      assert.notOk(true, 'request should not be performed');
+    });
+
+    visit('/');
+
+    click(testSelector('signup-link'));
+
+    andThen(() => {
+      fillIn(testSelector('signup-email-field'), 'example@email.com');
+      fillIn(testSelector('signup-password-field'), 'password123');
+      click(testSelector('signup-submit-btn'));
+    });
+
+    andThen(() => {
+      assert.ok(find(testSelector('signup-errors')).length,
+        'errors should be displayed');
+    });
   });
 });
